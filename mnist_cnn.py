@@ -1,28 +1,38 @@
 import os.path
 import pandas as pd
+import keras
 from keras.models import Sequential
-from keras.layers.core import Dense, Dropout, Activation
+from keras.layers.core import Dense, Dropout, Flatten
 from keras.optimizers import SGD, Adam, RMSprop
 from keras.utils import np_utils
+from keras.layers.convolutional import Conv2D, MaxPooling2D
+from keras import backend as K
 
-batch_size = 128
+batch_size = 42000
 num_classes = 10
 epochs = 12
+model_file_name="mnist-model.hdf5"
 
 train = pd.read_csv('train.csv').values
 trainY = np_utils.to_categorical(train[:,0].astype('int32'), num_classes)
 trainX = train[:, 1:].astype('float32')
 trainX /= 255
 
+
 img_rows, img_cols = 28, 28
 
-trainX = trainX.reshape(trainX.shape[0], img_rows, img_cols)
+trainX = trainX.reshape(trainX.shape[0], img_rows, img_cols, 1)
+
 input_shape = (img_rows, img_cols, 1)
 
+
 model = Sequential()
-model.add(Conv2D(32, kernel_size(3,3),
+model.add(Conv2D(32,
+                 data_format='channels_last',
+                 kernel_size=(3,3),
                  activation='relu',
                  input_shape=input_shape))
+model.add(Conv2D(64, (3,3), activation='relu'))
 model.add(MaxPooling2D(pool_size=(2,2)))
 model.add(Dropout(0.25))
 model.add(Flatten())
@@ -39,3 +49,5 @@ model.fit(trainX, trainY,
           epochs=epochs,
           verbose=1,
           )
+
+model.save(model_file_name)
