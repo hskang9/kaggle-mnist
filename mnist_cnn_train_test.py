@@ -47,7 +47,11 @@ model.compile(loss=keras.losses.categorical_crossentropy,
 model.fit(trainX, trainY,
           batch_size=batch_size,
           epochs=epochs,
-          verbose=1,
+          verbose=2,
           )
 
 model.save(model_file_name)
+
+score = model.evaluate(trainX, trainY, verbose=0)
+print('Test loss:', score[0])
+print('Test accuracy:', score[1])
