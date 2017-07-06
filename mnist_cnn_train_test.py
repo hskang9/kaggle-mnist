@@ -7,10 +7,11 @@ from keras.optimizers import SGD, Adam, RMSprop
 from keras.utils import np_utils
 from keras.layers.convolutional import Conv2D, MaxPooling2D
 from keras import backend as K
+from keras.callbacks import EarlyStopping
 
 batch_size = 128
 num_classes = 10
-epochs = 12
+epochs = 30
 model_file_name="mnist-model.hdf5"
 
 train = pd.read_csv('train.csv').values
@@ -40,14 +41,21 @@ model.add(Dense(128, activation='relu'))
 model.add(Dropout(0.5))
 model.add(Dense(num_classes, activation='softmax'))
 
+
 model.compile(loss=keras.losses.categorical_crossentropy,
               optimizer=keras.optimizers.Adadelta(),
               metrics=['accuracy'])
+
+
+# Define early stopping monitor
+early_stopping_monitor = EarlyStopping(patience=2)
+
 
 model.fit(trainX, trainY,
           batch_size=batch_size,
           epochs=epochs,
           verbose=2,
+	  callbacks=[early_stopping_monitor]
           )
 
 model.save(model_file_name)
