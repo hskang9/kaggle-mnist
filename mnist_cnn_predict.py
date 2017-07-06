@@ -11,6 +11,13 @@ from keras import backend as K
 testX = pd.read_csv('test.csv').values.astype('float32')
 testX /= 255
 
+img_rows, img_cols = 28, 28
+
+testX = testX.reshape(testX.shape[0], img_rows, img_cols, 1)
+
+input_shape = (img_rows, img_cols, 1)
+num_classes = 10
+
 model = Sequential()
 model.add(Conv2D(32,
                  data_format='channels_last',

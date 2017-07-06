@@ -8,7 +8,7 @@ from keras.utils import np_utils
 from keras.layers.convolutional import Conv2D, MaxPooling2D
 from keras import backend as K
 
-batch_size = 42000
+batch_size = 128
 num_classes = 10
 epochs = 12
 model_file_name="mnist-model.hdf5"
