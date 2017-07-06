@@ -36,9 +36,10 @@ model.compile(loss=keras.losses.categorical_crossentropy,
               optimizer=keras.optimizers.Adadelta(),
               metrics=['accuracy'])
 
-model_file = 'mnist-model.hdf5'
+model_file = 'mnist-model2.hdf5'
 model.load_weights(model_file)
 
 testY = model.predict_classes(testX, verbose=2)
 
-pd.DataFrame({"ImageId": list(range(1,len(testY)+1)), "Label": testY}).to_csv('submission.csv', index=False, header=True)
+pd.DataFrame({"ImageId": list(range(1,len(testY)+1)),
+              "Label": testY}).to_csv('submission2.csv', index=False, header=True)
