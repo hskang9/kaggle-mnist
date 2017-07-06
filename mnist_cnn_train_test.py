@@ -12,6 +12,7 @@ from keras.callbacks import EarlyStopping
 batch_size = 128
 num_classes = 10
 epochs = 30
+
 model_file_name="mnist-model2.hdf5"
 
 train = pd.read_csv('train.csv').values
@@ -49,6 +50,7 @@ model.compile(loss=keras.losses.categorical_crossentropy,
 
 # Define early stopping monitor
 early_stopping_monitor = EarlyStopping(monitor="loss", min_delta=0, patience=2, verbose=0, mode='auto')
+
 
 model.fit(trainX, trainY,
           batch_size=batch_size,
