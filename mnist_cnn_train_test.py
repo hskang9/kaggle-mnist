@@ -12,7 +12,7 @@ from keras.callbacks import TensorBoard
 
 batch_size = 128
 num_classes = 10
-epochs = 30
+epochs = 10
 
 model_file_name="mnist-model.hdf5"
 
@@ -59,6 +59,8 @@ callbacks = [EarlyStopping(monitor="loss",
 			 write_graph=True,
 			 write_images=True,
 			 embeddings_freq=2,
+			 embeddings_layer_names=['1','2','3','4','5'],
+			 
 			)
 	    ]
 
