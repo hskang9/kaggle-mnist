@@ -48,6 +48,13 @@ model.compile(loss=keras.losses.categorical_crossentropy,
               optimizer=keras.optimizers.Adadelta(),
               metrics=['accuracy'])
 
+# Keep eye on all our embedding layers.
+embeddings_to_monitor = ['embeddings_{}'.format(i)
+                         for i in range(5)]
+metadata_file_name = 'metadata.tsv'
+embeddings_metadata = {layer_name: metadata_file_name
+                       for layer_name in embeddings_to_monitor}
+
 
 # Define early stopping monitor
 callbacks = [EarlyStopping(monitor="loss",
@@ -56,10 +63,12 @@ callbacks = [EarlyStopping(monitor="loss",
                            verbose=0,
                            mode='auto'),
 	     TensorBoard(log_dir='./logs',
-			 write_graph=True,
-			 write_images=True,
+			 histogram_freq=1,
+			 write_graph=False,
+			 write_images=False,
 			 embeddings_freq=2,
-			 embeddings_layer_names=['1','2','3','4','5'],
+			 embeddings_layer_names=embeddings_to_monitor,
+			 embeddings_metadata=embeddings_metadata
 			 
 			)
 	    ]
