@@ -8,10 +8,11 @@ from keras.utils import np_utils
 from keras.layers.convolutional import Conv2D, MaxPooling2D
 from keras import backend as K
 from keras.callbacks import EarlyStopping
+from keras.callbacks import TensorBoard
 
 batch_size = 128
 num_classes = 10
-epochs = 100
+epochs = 30
 
 model_file_name="mnist-model.hdf5"
 
@@ -49,18 +50,23 @@ model.compile(loss=keras.losses.categorical_crossentropy,
 
 
 # Define early stopping monitor
-early_stopping_monitor = EarlyStopping(monitor="loss",
-				       min_delta=0,
-				       patience=3, 
-                                       verbose=0,
-                                       mode='auto')
-
+callbacks = [EarlyStopping(monitor="loss",
+		           min_delta=0,
+		           patience=3, 
+                           verbose=0,
+                           mode='auto'),
+	     TensorBoard(log_dir='./logs',
+			 write_graph=True,
+			 write_images=True,
+			 embeddings_freq=2,
+			)
+	    ]
 
 model.fit(trainX, trainY,
           batch_size=batch_size,
           epochs=epochs,
           verbose=2,
-	  callbacks=[early_stopping_monitor]
+	  callbacks=callbacks
 	 )
 
 model.save(model_file_name)
